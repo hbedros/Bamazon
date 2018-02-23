@@ -49,7 +49,7 @@ function promptUserPurchase() {
 		var item = input.item_id;
 		var quantity = input.quantity;
 
-		var queryStr = 'SELECT * FROM products WHERE ?';
+		var queryStr = `SELECT * FROM ${TABLE} WHERE ?`;
 
 		connection.query(queryStr, {item_id: item}, function(error, data) {
 
@@ -82,10 +82,9 @@ function promptUserPurchase() {
                     console.log("\n---------------------------------------------------------------------\n");
 					console.log('Sorry, there is not enough product in stock, your order can not be placed as is.');
 					console.log('Please modify your order.');
-					console.log("\n---------------------------------------------------------------------\n");
+                    promptUserPurchase();
                 }
             }
-            promptUserPurchase();
         })  
     })
 }
@@ -94,7 +93,7 @@ function promptUserPurchase() {
 function displayInventory() {
 
 	// Construct the db query string
-	queryStr = 'SELECT * FROM products';
+	queryStr = `SELECT * FROM ${TABLE}`;
 
 	// Make the db query
 	connection.query(queryStr, function(err, data) {

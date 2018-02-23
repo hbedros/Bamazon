@@ -21,7 +21,7 @@ function validateInput(value) {
 	if (integer && (sign === 1)) {
 		return true;
 	} else {
-		return 'Please enter a whole non-zero number.';
+		return 'Please enter a valid non-zero number.';
 	}
 }
 
@@ -52,9 +52,6 @@ function promptUserPurchase() {
 		var queryStr = 'SELECT * FROM products WHERE ?';
 
 		connection.query(queryStr, {item_id: item}, function(error, data) {
-			if (error){
-                console.error(error);
-            }
 
 			if (data.length === 0) {
 				console.log('ERROR: Invalid Item ID. Please select a valid Item ID.');
@@ -82,20 +79,19 @@ function promptUserPurchase() {
 						connection.end();
 					})
 				} else {
+                    console.log("\n---------------------------------------------------------------------\n");
 					console.log('Sorry, there is not enough product in stock, your order can not be placed as is.');
 					console.log('Please modify your order.');
 					console.log("\n---------------------------------------------------------------------\n");
-
-					displayInventory();
-				}
-			}
-		})
-	})
+                }
+            }
+            promptUserPurchase();
+        })  
+    })
 }
 
 // displayInventory will retrieve the current inventory from the database and output it to the console
 function displayInventory() {
-	// console.log('___ENTER displayInventory___');
 
 	// Construct the db query string
 	queryStr = 'SELECT * FROM products';

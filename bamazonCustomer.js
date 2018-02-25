@@ -9,11 +9,10 @@ const connection = mysql.createConnection({
     root: 3306,
 
     user:'root',
-    password:'gabig',
+    password:'',
     database: DATABASE
 });
 
-// validateInput makes sure that the user is supplying only positive integers for their inputs
 function validateInput(value) {
 	var integer = Number.isInteger(parseFloat(value));
 	var sign = Math.sign(value);
@@ -25,10 +24,9 @@ function validateInput(value) {
 	}
 }
 
-// promptUserPurchase prompts the option so the user can shop
 function promptUserPurchase() {
 
-	// Prompt the user to select an item
+
 	inquirer.prompt([
 		{
 			type: 'input',
@@ -63,11 +61,8 @@ function promptUserPurchase() {
 				if (quantity <= productData.stock_quantity) {
 					console.log('The product you requested is in stock! Placing your order...');
 
-					// Construct the updating query string
 					var updateQueryStr = 'UPDATE products SET stock_quantity = ' + (productData.stock_quantity - quantity) + ' WHERE item_id = ' + item;
-					// console.log('updateQueryStr = ' + updateQueryStr);
 
-					// Update the inventory
 					connection.query(updateQueryStr, function(err, data) {
 						if (err) throw err;
 
@@ -75,7 +70,6 @@ function promptUserPurchase() {
 						console.log('Thank you for shopping with us!');
 						console.log("\n---------------------------------------------------------------------\n");
 
-						// End the database connection
 						connection.end();
 					})
 				} else {
@@ -89,13 +83,10 @@ function promptUserPurchase() {
     })
 }
 
-// displayInventory will retrieve the current inventory from the database and output it to the console
 function displayInventory() {
 
-	// Construct the db query string
 	queryStr = `SELECT * FROM ${TABLE}`;
 
-	// Make the db query
 	connection.query(queryStr, function(err, data) {
 		if (err) throw err;
 
@@ -115,18 +106,13 @@ function displayInventory() {
 
 	  	console.log("---------------------------------------------------------------------\n");
 
-	  	//Prompt the user for item/quantity they would like to purchase
 	  	promptUserPurchase();
 	})
 }
 
-// runBamazon will execute the main application logic
 function runBamazon() {
-	// console.log('___ENTER runBamazon___');
 
-	// Display the available inventory
 	displayInventory();
 }
 
-// Run the application logic
 runBamazon();

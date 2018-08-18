@@ -1,6 +1,6 @@
 # BAMazon
 
-The goal was to create an Amazon-like store front using Node.js and MySQL.
+Creating an Amazon-like store front using Node.js and MySQL.
 
 ## Getting Started
 
